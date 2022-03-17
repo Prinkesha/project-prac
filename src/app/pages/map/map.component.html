@@ -1,0 +1,91 @@
+<div class="container">
+    <form [formGroup]="userForm">
+        <!------------------------------------ email ----------------------------->
+        <div class="form-group email_main"
+            [ngClass]="{'form-invalid': !userForm.get('email')?.valid && userForm.get('email')?.touched }">
+            <label>Email : </label>
+            <input type="text" required formControlName="email" id="email" class="form-control bgc" name="email" />
+            <span
+                *ngIf="!userForm.get('email')?.valid && userForm.get('email')?.touched && userForm.get('email')?.errors?.['required']">
+                Email is required
+            </span>
+            <span
+                *ngIf="!userForm.get('email')?.valid && userForm.get('email')?.touched && userForm.get('email')?.errors?.['email']">
+                Please enter a valid email
+            </span>
+        </div>
+        <!------------------------------------ username ----------------------------->
+        <div class="form-group pass">
+            <label>Username: </label>
+            <input type="text" formControlName="username" class="form-control bgc" name="username" />
+            <span
+                *ngIf="!userForm.get('username')?.valid && userForm.get('username')?.touched && userForm.get('username')?.errors?.['required']">
+                username is required
+            </span>
+        </div>
+        <!------------------------------------ password ----------------------------->
+        <div class="form-group pass">
+            <label>password : </label>
+            <input type="text" formControlName="password" class="form-control bgc" name="password" />
+            <span
+                *ngIf="!userForm.get('password')?.valid && userForm.get('password')?.touched && userForm.get('password')?.errors?.['required']">
+                password is required
+            </span>
+        </div>
+        <div formGroupName="name">
+            <!------------------------------------ firstname ----------------------------->
+            <div class="form-group">
+                <label>First Name : </label>
+                <input type="text" class="form-control" name="firstname" formControlName="firstname" required
+                    autocomplete="off">
+                <span class="text-danger"
+                    *ngIf="userForm.get('firstname')?.touched && userForm.get('firstname')?.errors?.['required']">Please
+                    enter youe first name.</span>
+            </div>
+            <!------------------------------------ lastname ----------------------------->
+            <div class="form-group">
+                <label>Last Name : </label>
+                <input type="text" class="form-control" name="lastname" formControlName="lastname" required
+                    autocomplete="off">
+                <span class="text-danger"
+                    *ngIf="userForm.get('lastname')?.touched && userForm.get('lastname')?.errors?.['required']">Please
+                    enter
+                    youe lastName.</span>
+            </div>
+        </div>
+        <!------------------------------------ botton ----------------------------->
+        <div class="form-group">
+            <button class="btn btn-success mt-4" type="submit">Submit</button>
+        </div>
+    </form>
+</div>
+
+
+
+<div class="container mt-5">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Email</th>
+                <th>Username</th>
+                <th>password</th>
+                <th>Firstname</th>
+                <th>Lastname</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of items">
+                <td>{{ item.email }}</td>
+                <td>{{ item.username }}</td>
+                <td>{{ item.password }}</td>
+                <td>{{ item.name.firstname }}</td>
+                <td>{{ item.name.lastname }}</td>
+                <td>
+                    <button class="btn btn-success">Edit</button>
+                    <button class="btn btn-danger">Delete</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

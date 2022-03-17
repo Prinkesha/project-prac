@@ -1,0 +1,71 @@
+<div class="py-5 px-4 main_1 mt-5 mb-5">
+    <h2 class="center">Registration</h2>
+    <div class="center spanpadding">
+     <span class="grey">Already have an account? <a [routerLink]="['/login']" class="blue">Sign in here</a> </span>
+    </div>
+    <div class="img_set mt-2">
+        <img src="../../../assets/google.png" alt=""><span class="blue">Sign in With Google</span>
+    </div>
+    <div [formGroup]="userForm">
+      <!-- <p>Sign in and get to work</p> -->
+      <div class="all_input">
+        <div class="form-group email_main">
+            <input type="text" formControlName="Firstname" placeholder="Firstname" class="form-control bgc" name="Firstname" />
+            <span
+              *ngIf="!userForm.get('Firstname')?.valid && userForm.get('Firstname')?.touched && userForm.get('Firstname')?.errors?.['required']">
+              Firstname is required
+            </span>
+          </div>
+      <div class="form-group email_main">
+        <input type="text" formControlName="Lastname" placeholder="Lastname" class="form-control bgc" name="Lastname" />
+        <span
+          *ngIf="!userForm.get('Lastname')?.valid && userForm.get('Lastname')?.touched && userForm.get('Lastname')?.errors?.['required']">
+          Lastname is required
+        </span>
+      </div>
+     </div>
+     <br>
+     <div class="all_input">
+        <div class="form-group email_main">
+            <input type="text" formControlName="ContactNo" placeholder="ContactNo" class="form-control bgc" name="ContactNo" />
+            <span
+              *ngIf="!userForm.get('ContactNo')?.valid && userForm.get('ContactNo')?.touched && userForm.get('ContactNo')?.errors?.['required']">
+              ContactNo is required
+            </span>
+          </div>
+        <div
+        class="form-group email_main"
+        [ngClass]="{'form-invalid': !userForm.get('email')?.valid && userForm.get('email')?.touched }" >
+        <input  type="text" required placeholder="Email" formControlName="email" id="email" class="form-control bgc" name="email" />
+        <span
+          *ngIf="!userForm.get('email')?.valid && userForm.get('email')?.touched && userForm.get('email')?.errors?.['required']"
+        >
+          Email is required
+        </span>
+        <span
+          *ngIf="!userForm.get('email')?.valid && userForm.get('email')?.touched && userForm.get('email')?.errors?.['email']"
+        >
+          Please enter a valid email
+        </span>
+      </div>
+     
+     </div>
+     <br>
+     <div class="form-group pass">
+        <input type="text" formControlName="password" placeholder="password" class="form-control bgc" name="password" />
+        <span
+          *ngIf="!userForm.get('password')?.valid && userForm.get('password')?.touched && userForm.get('password')?.errors?.['required']">
+          password is required
+        </span>
+      </div>
+     <br>
+     <div>
+         <input type="checkbox" class="grey">I Agree <span class="blue">Terms and conditions.</span>
+     </div>
+      <br />
+    
+      <div class="btnn">
+        <button type="submit" [routerLink]="['/main']" class= "btn btn_color">Submit</button>
+      </div>
+    </div>
+  </div>

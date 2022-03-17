@@ -1,0 +1,45 @@
+<div class="modal-header">
+    <h4 class="modal-title">My Form</h4>
+    <button type="button" [routerLink]="['/main']" class="close btn btn-danger btn_close" aria-label="Close" (click)="closeModal()"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x-square-fill" viewBox="0 0 16 16">
+        <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708z"/>
+      </svg></button>
+  </div>
+<section class="container main mt-3 p-5">
+    <h3 class="text-center">Userform</h3>    
+    <form [formGroup]="userForm" (ngSubmit)="submitData()">
+        <input type="hidden" name="id" formControlName="id" id="id">
+        <div class="form-group">
+            <label>Name :</label>
+            <input type="text" name="Name" formControlName="Name" class="form-control" required>
+            <span class="text-danger" *ngIf="this.userForm.get('Name')?.touched && this.userForm.get('Name')?.errors?.['required']">
+                please enter your Name.
+            </span>
+        </div>
+        <div class="form-group">
+            <label>Address :</label> <br>
+            <textarea class="textarea" id="" cols="100" rows="2" formControlName="Address"></textarea>
+            <span class="text-danger" *ngIf="this.userForm.get('Address')?.touched && this.userForm.get('Address')?.errors?.['required']">
+                please enter your Address.
+            </span>
+        </div>
+        <div class="form-group">
+            <label>Contact :</label>
+            <input type="number" name="Contact" formControlName="Contact" class="form-control" required>
+            <span class="text-danger" *ngIf="this.userForm.get('Contact')?.touched && this.userForm.get('Contact')?.errors?.['required']">
+                please enter your Contact.
+            </span>
+        </div>
+        <div class="form-group">
+            <label>OrderNumber :</label>
+            <input type="number" name="Contact" formControlName="OrderNumber" class="form-control" required>
+            <span class="text-danger" *ngIf="this.userForm.get('OrderNumber')?.touched && this.userForm.get('OrderNumber')?.errors?.['required']">
+                please enter your OrderNumber.
+            </span>
+        </div>   
+        <div class="form-group">
+            <button class="btn btn-success mt-3" style="background-color: #009ef7; border: 1px solid #009ef7;" type="submit" [disabled]="userForm.invalid">Add</button>
+        </div>
+    </form>
+</section>
+
+

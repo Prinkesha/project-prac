@@ -1,0 +1,89 @@
+
+
+// .logo {
+//     background-color: #1a1a27;
+//     padding: 21px;
+//     display: flex;
+//     justify-content: space-between;
+// }
+
+.navbar ul li a {
+    text-decoration: none;
+    font-size: 13px;
+    margin: 0 10px;
+    color: #5e6278;
+    padding: 10px 15px;
+    font-weight: 500;
+    border-radius: 5px;
+}
+
+.navbar ul li a:hover,
+#dashboard {
+    text-decoration: none;
+    font-size: 13px;
+    margin: 0 10px;
+    color: #009ef7;
+    background-color: rgba(245, 248, 250, 0.8);
+    padding: 10px 15px;
+    font-weight: 500;
+    border-radius: 5px;
+}
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    scroll-behavior: smooth
+}
+
+
+nav.navbar.navbar-expand-lg.navbar-light.bg-light {
+    padding: 5px;
+    font-size: 20px;
+    background-color: #fff !important;
+}
+
+.col-3.nav-sidebar {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.component {
+    height: calc(100vh - 62px);
+}
+
+.btn.btn-active-color-primary:hover:not(.btn-active) .svg-icon svg [fill]:not(.permanent):not(g) {
+    transition: fill .3s ease;
+    padding: 8px !important;
+    margin: 5px 0 !important;
+    border-radius: 8px;
+    background-color: rgba(245, 248, 250, 0.8);
+    fill: #009ef7;
+}
+
+span.nav-icon.svg-icon.svg-icon-1:hover {
+    background-color: rgba(245, 248, 250, 0.8);
+    border-radius: 8px;
+}
+
+.nav-icon:hover {
+    transition: .3s ease;
+    padding: 8px !important;
+    margin: 5px 0 !important;
+    border-radius: 8px;
+    background-color: rgba(245, 248, 250, 0.8);
+    color: #009ef7;
+}
+
+span.nav-icon.svg-icon.svg-icon-1 {
+    padding: 8px;
+    background-color: #1e1e2d;
+    margin: 5px 0;
+    line-height: 3;
+
+}
+.all{
+    background-color: #1e1e2d;
+}
+.h-25px {
+    height: 36px !important;
+}
