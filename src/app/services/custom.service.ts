@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 // import { User } from '../User';
@@ -15,8 +16,8 @@ export class CustomService {
   newData:any
   private userData: any = new BehaviorSubject("")
   items = this.userData.asObservable()
- 
-  constructor() { }
+ url = 'https://fakestoreapi.com/users'
+  constructor(private http : HttpClient) { }
 
   // addUser(crrData: any) {
   //   const crrArr = this.userData.getValue();
@@ -39,6 +40,9 @@ export class CustomService {
     return this.userData.getValue().find((x: any) => x.id == id)
   }
 
+  // findUser(id:any){
+  //  return this.http.get(this.url + '/7' + id)
+  // }
   
   // getFile(file:any){
   //   return this.userData.getValue().find((x: any) => x.file == file)
@@ -67,7 +71,7 @@ export class CustomService {
 //   }
 // }
 
-  
+
   
 
 }

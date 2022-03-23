@@ -26,7 +26,7 @@
   </div>
   <!------------------------------ add user ----------------------------->
   <div>
-    <button class="btn btn-primary" (click)="openModal()"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+    <button class="btn btn-primary" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
         fill="white" class="bi bi-person-plus-fill" viewBox="0 0 16 16">
         <path d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
         <path fill-rule="evenodd"
@@ -35,9 +35,164 @@
   </div>
 </div>
 
-
-  <!---------------------------------- card view---------------------- -->
-<app-cutomerview [items]="items" [mode]="mode"> 
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+  aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="container">
+          <form [formGroup]="userForm" (ngSubmit)="saveData()">
+            <!------------------------------------ email ----------------------------->
+            <div class="form-group email_main"
+              [ngClass]="{'form-invalid': !userForm.get('email')?.valid && userForm.get('email')?.touched }">
+              <label>Email : </label>
+              <input type="text" required formControlName="email" id="email" class="form-control" name="email" />
+              <span
+                *ngIf="!userForm.get('email')?.valid && userForm.get('email')?.touched && userForm.get('email')?.errors?.['required']">
+                Email is required
+              </span>
+              <span
+                *ngIf="!userForm.get('email')?.valid && userForm.get('email')?.touched && userForm.get('email')?.errors?.['email']">
+                Please enter a valid email
+              </span>
+            </div>
+            <!------------------------------------ username ----------------------------->
+            <div class="form-group pass">
+              <label>Username: </label>
+              <input type="text" formControlName="username" class="form-control" name="username" />
+              <span
+                *ngIf="!userForm.get('username')?.valid && userForm.get('username')?.touched && userForm.get('username')?.errors?.['required']">
+                username is required
+              </span>
+            </div>
+            <!------------------------------------ password ----------------------------->
+            <div class="form-group pass">
+              <label>password : </label>
+              <input type="text" formControlName="password" class="form-control" name="password" />
+              <span
+                *ngIf="!userForm.get('password')?.valid && userForm.get('password')?.touched && userForm.get('password')?.errors?.['required']">
+                password is required
+              </span>
+            </div>
+            <div formGroupName="name" class="bg-light pt-3 pb-3 mt-3 mb-3">
+              <h6>-----------------------------Name-----------------------------</h6>
+              <!-- <div class="form-group form-group-default"> -->
+                <div class="name_sub">
+                  <!-- ---------------------------------- firstname --------------------------- -->
+                  <div class="input-group">
+                    <label>First Name : </label>
+                    <input type="text" class="form-control" name="firstname" formControlName="firstname" required
+                      autocomplete="off">
+                    <span class="text-danger"
+                      *ngIf="userForm.get('firstname')?.touched && userForm.get('firstname')?.errors?.['required']">Please
+                      enter youe first name.</span>
+                  </div>
+                  <!------------------------------------ lastname ----------------------------->
+                  <div class="input-group">
+                    <label>Last Name : </label>
+                    <input type="text" class="form-control" name="lastname" formControlName="lastname" required
+                      autocomplete="off">
+                    <span class="text-danger"
+                      *ngIf="userForm.get('lastname')?.touched && userForm.get('lastname')?.errors?.['required']">Please
+                      enter
+                      youe lastName.</span>
+                  </div>
+                </div>
+              </div>
+            <!-- </div> -->
+            <div formGroupName="address" class="bg-light pt-3 pb-3 mt-3 mb-3">
+              <h6>----------------------------address----------------------------</h6>
+              <div class="name_sub">
+                <!------------------------------------ city ----------------------------->
+                <div class="form-group">
+                  <label>city : </label>
+                  <input type="text" class="form-control" name="city" formControlName="city" required
+                    autocomplete="off">
+                  <span class="text-danger"
+                    *ngIf="userForm.get('city')?.touched && userForm.get('city')?.errors?.['required']">Please
+                    enter youe city.</span>
+                </div>
+                <!------------------------------------ street ----------------------------->
+                <div class="form-group">
+                  <label>street : </label>
+                  <input type="number" class="form-control" name="street" formControlName="street" required
+                    autocomplete="off">
+                  <span class="text-danger"
+                    *ngIf="userForm.get('street')?.touched && userForm.get('street')?.errors?.['required']">Please
+                    enter
+                    youe street.</span>
+                </div>
+              </div>
+              <div class="name_sub">
+                <!------------------------------------ number ----------------------------->
+                <div class="form-group">
+                  <label>number : </label>
+                  <input type="number" class="form-control" name="number" formControlName="number" required
+                    autocomplete="off">
+                  <span class="text-danger"
+                    *ngIf="userForm.get('number')?.touched && userForm.get('number')?.errors?.['required']">Please
+                    enter youe number.</span>
+                </div>
+                <!------------------------------------ zipcode ----------------------------->
+                <div class="form-group">
+                  <label>zipcode : </label>
+                  <input type="zipcode" class="form-control" name="zipcode" formControlName="zipcode" required
+                    autocomplete="off">
+                  <span class="text-danger"
+                    *ngIf="userForm.get('zipcode')?.touched && userForm.get('zipcode')?.errors?.['required']">Please
+                    enter
+                    youe zipcode.</span>
+                </div>
+              </div>
+            </div>
+            <div formGroupName="geolocation" class="bg-light pt-3 pb-3 mt-3 mb-3">
+              <h6>--------------------------geolocation-------------------------</h6>
+              <div class="name_sub">
+                <div class="form-group">
+                  <label>lat : </label>
+                  <input type="text" class="form-control" name="lat" formControlName="lat" required
+                    autocomplete="off">
+                  <span class="text-danger"
+                    *ngIf="userForm.get('lat')?.touched && userForm.get('lat')?.errors?.['required']">Please
+                    enter youe lat.</span>
+                </div>
+                <div class="form-group">
+                  <label>long : </label>
+                  <input type="text" class="form-control" name="long" formControlName="long" required
+                    autocomplete="off">
+                  <span class="text-danger"
+                    *ngIf="userForm.get('long')?.touched && userForm.get('long')?.errors?.['required']">Please
+                    enter
+                    youe long.</span>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>phone : </label>
+              <input type="text" formControlName="phone" class="form-control" name="phone" />
+              <span
+                *ngIf="!userForm.get('phone')?.valid && userForm.get('phone')?.touched && userForm.get('phone')?.errors?.['required']">
+                phone is required
+              </span>
+            </div>
+            <!------------------------------------ botton ----------------------------->
+            <div class="form-group mt-4">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button class="btn btn-primary ms-3"  data-bs-dismiss="modal"  type="submit">{{ id==0 || id==null ? 'save': 'update'}}</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!---------------------------------- card view---------------------- -->
+<app-cutomerview [items]="items" [mode]="mode">
   <ng-template appCardItem>
     <div class="container">
       <div class="change1 sub  p-5 mt-5 mb-5">
@@ -49,46 +204,84 @@
               <h6>{{ item.username }}</h6>
               <h6>{{ item.password }}</h6>
               <h6>{{ item.name.firstname }}</h6>
-              <td>{{ item.name.lastname }}</td>
-              <div>
-                <button class="btn btn-success">Edit</button>
-                <button class="btn btn-danger">Delete</button>
+              <h6>{{ item.name.lastname }}</h6>
+         <div>
+          <span>{{ item.address.city }}</span>
+          <span class="ms-4">{{ item.address.street }}</span>
+         </div>
+         <div>
+          <span>{{ item.address.number }}</span>
+          <span class="ms-4">{{ item.address.zipcode }}</span>
+         </div>
+             <div>
+              <span>{{ item.address.geolocation.lat }}</span>
+              <span class="ms-4">{{ item.address.geolocation.long }}</span>
+             </div>
+              <h6>{{ item.phone}}</h6>
+              <div class="mt-2">
+                <button class="btn bgc text-white">Edit</button>
+                <button (click)="deleteUserData(item.id)"  class="btn bgc text-white ms-3">Delete</button>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-   
+
   </ng-template>
 
   <!--------------------------------- table view -------------------------------->
   <div>
     <ng-template appListItem>
 
-     <div class="list_view p-3">
-      <table class="table table-borderless container ">
-        <tr class="tr_border ">
+      <div class="list_view p-3">
+        <table class="table table-borderless table-striped ">
+         <thead>
+          <tr class="tr_border ">
             <th>Email</th>
             <th>Username</th>
             <th>password</th>
             <th>Firstname</th>
             <th>Lastname</th>
+            <th>city</th>
+            <th>street</th>
+            <th>number</th>
+            <th>zipcode</th>
+            <th>lat</th>
+            <th>long</th>
+            <th>phone</th>
             <th>Action</th>
-        </tr>
-        <tr *ngFor="let item of items" class="td_font pb-5">
-          <td>{{ item.email }}</td>
-                <td>{{ item.username }}</td>
-                <td>{{ item.password }}</td>
-                <td>{{ item.name.firstname }}</td>
-                <td>{{ item.name.lastname }}</td>
-                <td>
-                    <button class="btn btn-success">Edit</button>
-                    <button class="btn btn-danger">Delete</button>
-                </td>
-        </tr>
-      </table>
-     </div>
+          </tr>
+         </thead>
+         <tbody>
+          <tr *ngFor="let item of items" class="td_font pb-5">
+            <td>{{ item.email }}</td>
+            <td>{{ item.username }}</td>
+            <td>{{ item.password }}</td>
+            <td>{{ item.name.firstname }}</td>
+            <td>{{ item.name.lastname }}</td>
+            <td>{{ item.address.city }}</td>
+            <td>{{ item.address.street }}</td>
+            <td>{{ item.address.number }}</td>
+            <td>{{ item.address.zipcode }}</td>
+            <td>{{ item.address.geolocation.lat }}</td>
+            <td>{{ item.address.geolocation.long }}</td>
+            <td>{{ item.phone}}</td>
+
+            
+            <td>
+              <button class="btn bgc " (click)="editUserData(item)" data-bs-toggle="modal" data-bs-target="#staticBackdrop" ><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="white" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+              </svg></button>
+              <button (click)="deleteUserData(item.id)" class="btn bgc ms-3"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="white" class="bi bi-trash3-fill" viewBox="0 0 16 16">
+                <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z"/>
+              </svg></button>
+            </td>
+          </tr>
+         </tbody>
+        </table>
+      </div>
     </ng-template>
   </div>
 </app-cutomerview>
@@ -120,13 +313,12 @@
 
 
 
-
-
-
-
-
-
-
+<!-- var x: IUser = {
+  name : {
+    firstname : "",
+    lastname : ""
+  }
+} -->
 
 
 
