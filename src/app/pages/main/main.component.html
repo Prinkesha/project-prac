@@ -47,6 +47,7 @@
       <div class="modal-body">
         <div class="container">
           <form [formGroup]="userForm" (ngSubmit)="saveData()">
+        <div class="form-group">    <input type="hidden" name="id" formControlName="id" id="id"></div>
             <!------------------------------------ email ----------------------------->
             <div class="form-group email_main"
               [ngClass]="{'form-invalid': !userForm.get('email')?.valid && userForm.get('email')?.touched }">
@@ -150,7 +151,7 @@
                 </div>
               </div>
             </div>
-            <div formGroupName="geolocation" class="bg-light pt-3 pb-3 mt-3 mb-3">
+            <!-- <div formGroupName="geolocation" class="bg-light pt-3 pb-3 mt-3 mb-3">
               <h6>--------------------------geolocation-------------------------</h6>
               <div class="name_sub">
                 <div class="form-group">
@@ -171,7 +172,7 @@
                     youe long.</span>
                 </div>
               </div>
-            </div>
+            </div> -->
             <div class="form-group">
               <label>phone : </label>
               <input type="text" formControlName="phone" class="form-control" name="phone" />
@@ -219,7 +220,7 @@
              </div>
               <h6>{{ item.phone}}</h6>
               <div class="mt-2">
-                <button class="btn bgc text-white">Edit</button>
+                <button class="btn bgc text-white" data-bs-toggle="modal" data-bs-target="#staticBackdrop" (click)="editUserData(item)">Edit</button>
                 <button (click)="deleteUserData(item.id)"  class="btn bgc text-white ms-3">Delete</button>
               </div>
             </div>

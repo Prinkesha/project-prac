@@ -26,6 +26,7 @@ export class MainComponent implements OnInit {
   edata: any
   constructor(public modalService: NgbModal, private router: Router, private userService: CustomService, private http: HttpClient, private fb: FormBuilder, private reference: ChangeDetectorRef) {
     this.userForm = this.fb.group({
+      // id: [''],
       email: ['', [Validators.required, Validators.email]],
       username: ['', [Validators.required]],
       password: ['', [Validators.required]],
@@ -89,7 +90,7 @@ export class MainComponent implements OnInit {
     }
     this.http.post(`${environment.apiEndPoint}`, Data).subscribe((res: any) => {
       debugger
-      if (res) {
+      if (res && this.id === 0) {
         alert('Data added successfully')
         let res: IUser = {
           email: this.userForm.value.email,
@@ -111,21 +112,18 @@ export class MainComponent implements OnInit {
           },
           phone: this.userForm.value.phone,
         }
-        this.userForm.reset()
         this.items.push(res)
+        this.userForm.reset()
       } else {
         console.log("data not add")
-        alert("data not add")
       }
-      console.log("res", res)
-      this.userForm.reset()
-
       this.reference.detectChanges()
     })
   }
 
   updateUserData(id: number) {
-    const Data : IUser= {
+    debugger
+    const Data: IUser = {
       "email": this.userForm.value.email,
       "username": this.userForm.value.username,
       "password": this.userForm.value.password,
@@ -145,77 +143,99 @@ export class MainComponent implements OnInit {
       },
       "phone": this.userForm.value.phone,
     }
-    this.http.put(`${environment.apiEndPoint}/${id}`, Data).subscribe((res: any) => {
+    this.http.put(`${environment.apiEndPoint}/${id}`, Data).subscribe((res:any) => {
       if (res) {
-        this.getUserData();
         this.userForm.reset();
+        this.getUserData();
       }
       else {
         alert(res.message)
       }
+      console.log("update", res)
     })
   }
-  //edit data
+ 
   editUserData(id: any) {
-
-    // this.userForm.patchValue({
-    //   email : edata.email,
-    //   username : edata.username,
-    //   password : edata.password,
-    //     name:{
-    //       firstname : edata.firstname,
-    //       lastname : edata.lastname,
-    //     },
-    //     address:{
-    //       lastname : edata.lastname,
-    //       lastname : edata.lastname,
-    //       lastname : edata.lastname,
-    //       lastname : edata.lastname,
-    //         geolocation:{
-    //             "lat":this.userForm.value.address.geolocation.lat,
-    //             "long":this.userForm.value.address.geolocation.long,
-    //         }
-    //     },
-    //     "phone":this.userForm.value.phone,
-    // })
-    // console.log("editid", id)
-
-    console.log("this",id)
+    console.log("id",id)
     debugger
-    // this.userService.findUser(id).subscribe((res:any) => {
-    //   this.items =res
-    this.http.get(`${environment.apiEndPoint}/${id}`).subscribe((res: any) => {
 
-      this.items = res
-      this.userForm.reset()
-      console.log("iddd",id)
-    })
+ if(id != 0){
+  this.userForm.patchValue({
+    email : id.email,
+    username : id.username,
+    password : id.password,
+      name:{
+        firstname : id.name.firstname,
+        lastname : id.name.lastname,
+      },
+      address:{
+        city : id.address.city,
+        street : id.address.street,
+        number : id.address.number,
+        zipcode : id.address.zipcode,
+          geolocation:{
+            lat : id.address.geolocation.lat,
+            long : id.address.geolocation.long,
+          }
+      },
+      phone: id.password,
+  })
+ }else{
+   alert("not")
+ }
+  // let res =  this.editUserInfo = id
+  // console.log("rrrr",res)
+  debugger
+// this.http.get(`${environment.apiEndPoint}/${id}`).subscribe((res) => {
 
-
-    // this.items.patch(res)
-    // this.userForm = this.items
-    // console.log("editDtaa", res)
-    // console.log("ediform", this.userForm)
-
-    // })
+//   this.editUserInfo = res
+//   if(this.id && this.id != 0){
+//     this.userForm.patchValue({
+//       email : id.email,
+//       username : id.username,
+//       password : id.password,
+//         name:{
+//           firstname : id.name.firstname,
+//           lastname : id.name.lastname,
+//         },
+//         address:{
+//           city : id.address.city,
+//           street : id.address.street,
+//           number : id.address.number,
+//           zipcode : id.address.zipcode,
+//             geolocation:{
+//               lat : id.address.geolocation.lat,
+//               long : id.address.geolocation.long,
+//             }
+//         },
+//         phone: id.password,
+//     })
+       
+//   }else{
+//     alert("data not edit")
+//   }
+ 
+       
+//           // this.editUserInfo.patch(this.userForm.value)
+          
+//           // this.userForm.push(this.editUserInfo)
+//       console.log("res",this.editUserInfo)
+//     })
   }
 
   //delete data
   deleteUserData(id: number) {
-    console.log("ddddd", id)
-    // this.http.delete(`${environment.apiEndPoint}/${id}`).subscribe((res: any) => {
     if (confirm('Data deleted successfully')) {
       this.items = this.items.filter((e: any) => e.id !== id)
     }
-    // })
   }
 
   saveData() {
-    if (this.id) {
+    if (this.id && this.id != 0) {
       this.updateUserData(this.id)
     }
     else {
-      this.addUserData();
+      this.addUserData()
     }
   }
 }
@@ -275,7 +295,21 @@ export class MainComponent implements OnInit {
 
 
 
+// this.userService.findUser(id).subscribe((res:any) => {
+    //   this.items =res
+    // this.http.get(`${environment.apiEndPoint}/${this.id}`,edata).subscribe((res: any) => {
 
+      // this.items = res
+      // console.log("res",res)
+    // })
+
+
+    // this.items.patch(res)
+    // this.userForm = this.items
+    // console.log("editDtaa", res)
+    // console.log("ediform", this.userForm)
+
+    // })
 
 
 

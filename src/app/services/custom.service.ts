@@ -40,9 +40,9 @@ export class CustomService {
     return this.userData.getValue().find((x: any) => x.id == id)
   }
 
-  // findUser(id:any){
-  //  return this.http.get(this.url + '/7' + id)
-  // }
+  findUser(id:any){
+   return this.http.get(this.url + '/7' + id)
+  }
   
   // getFile(file:any){
   //   return this.userData.getValue().find((x: any) => x.file == file)
