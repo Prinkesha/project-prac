@@ -1,32 +1,37 @@
 import { HttpClient } from '@angular/common/http';
-import { ThisReceiver } from '@angular/compiler';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CustomService } from 'src/app/services/custom.service';
 import { environment } from 'src/environments/environment';
-import { CustomerFormComponent } from '../customer-form/customer-form.component';
 import { IUser } from './data.modal';
+import {ConfirmationService} from 'primeng/api';
+import {Message} from 'primeng/api';
+import { PrimeNGConfig } from 'primeng/api';
 
 
 @Component({
   selector: 'app-main',
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.scss'],
-  providers: [CustomService]
+  providers: [CustomService,ConfirmationService ]
 })
 export class MainComponent implements OnInit {
+  closeResult = '';
+  show: boolean = false;
   newData: any = null
-  id: number = 0
   mode: any
   items: any = []
   userForm: FormGroup
   editUserInfo: any = null
   edata: any
-  constructor(public modalService: NgbModal, private router: Router, private userService: CustomService, private http: HttpClient, private fb: FormBuilder, private reference: ChangeDetectorRef) {
+  userData: any = null
+  msgs: Message[] = [];
+
+    position: string ='';
+  constructor(public modalService: NgbModal, private confirmationService: ConfirmationService, private primengConfig: PrimeNGConfig,private router: Router,private userService: CustomService, private http: HttpClient, private fb: FormBuilder, private reference: ChangeDetectorRef) {
     this.userForm = this.fb.group({
-      // id: [''],
       email: ['', [Validators.required, Validators.email]],
       username: ['', [Validators.required]],
       password: ['', [Validators.required]],
@@ -49,24 +54,29 @@ export class MainComponent implements OnInit {
     })
   }
 
-
   ngOnInit(): void {
+    this.primengConfig.ripple = true;
     this.getUserData()
   }
+
   changeMode() {
     this.mode = 'card';
     this.reference.detectChanges()
   }
+
   changeMode1() {
     this.mode = 'list';
     this.reference.detectChanges()
   }
+
   getUserData() {
     this.http.get(`${environment.apiEndPoint}`).subscribe((res: any) => {
       this.items = res
       console.log(this.items[0])
     })
   }
+
+  //add user data
   addUserData() {
     const Data: IUser = {
       "email": this.userForm.value.email,
@@ -90,7 +100,7 @@ export class MainComponent implements OnInit {
     }
     this.http.post(`${environment.apiEndPoint}`, Data).subscribe((res: any) => {
       debugger
-      if (res && this.id === 0) {
+      if (res) {
         alert('Data added successfully')
         let res: IUser = {
           email: this.userForm.value.email,
@@ -121,8 +131,8 @@ export class MainComponent implements OnInit {
     })
   }
 
-  updateUserData(id: number) {
-    debugger
+  //update user data
+  updateUserData() {
     const Data: IUser = {
       "email": this.userForm.value.email,
       "username": this.userForm.value.username,
@@ -143,101 +153,104 @@ export class MainComponent implements OnInit {
       },
       "phone": this.userForm.value.phone,
     }
-    this.http.put(`${environment.apiEndPoint}/${id}`, Data).subscribe((res:any) => {
+    console.log("data", Data)
+    this.http.put(`${environment.apiEndPoint}/${this.userData.id}`, Data).subscribe((res: any) => {
       if (res) {
         this.userForm.reset();
-        this.getUserData();
+        const findIndex = this.items.findIndex((f: any) => f.id == this.userData.id);
+        if (findIndex > -1) {
+          this.items[findIndex] = { ...this.items[findIndex], ...Data }
+        }
       }
       else {
-        alert(res.message)
+        alert("data not update")
       }
       console.log("update", res)
     })
   }
- 
-  editUserData(id: any) {
-    console.log("id",id)
-    debugger
 
- if(id != 0){
-  this.userForm.patchValue({
-    email : id.email,
-    username : id.username,
-    password : id.password,
-      name:{
-        firstname : id.name.firstname,
-        lastname : id.name.lastname,
+  //edit user data
+  editUserData(data: any) {
+    console.log("editid", data)
+    this.userData = data;
+    this.userForm.patchValue({
+      email: data.email,
+      username: data.username,
+      password: data.password,
+      name: {
+        firstname: data.name.firstname,
+        lastname: data.name.lastname,
       },
-      address:{
-        city : id.address.city,
-        street : id.address.street,
-        number : id.address.number,
-        zipcode : id.address.zipcode,
-          geolocation:{
-            lat : id.address.geolocation.lat,
-            long : id.address.geolocation.long,
-          }
+      address: {
+        city: data.address.city,
+        street: data.address.street,
+        number: data.address.number,
+        zipcode: data.address.zipcode,
+        geolocation: {
+          lat: data.address.geolocation.lat,
+          long: data.address.geolocation.long,
+        }
       },
-      phone: id.password,
-  })
- }else{
-   alert("not")
- }
-  // let res =  this.editUserInfo = id
-  // console.log("rrrr",res)
-  debugger
-// this.http.get(`${environment.apiEndPoint}/${id}`).subscribe((res) => {
+      phone: data.phone,
+    })
+    this.reference.detectChanges()
+  }
 
-//   this.editUserInfo = res
-//   if(this.id && this.id != 0){
-//     this.userForm.patchValue({
-//       email : id.email,
-//       username : id.username,
-//       password : id.password,
-//         name:{
-//           firstname : id.name.firstname,
-//           lastname : id.name.lastname,
-//         },
-//         address:{
-//           city : id.address.city,
-//           street : id.address.street,
-//           number : id.address.number,
-//           zipcode : id.address.zipcode,
-//             geolocation:{
-//               lat : id.address.geolocation.lat,
-//               long : id.address.geolocation.long,
-//             }
-//         },
-//         phone: id.password,
-//     })
-       
-//   }else{
-//     alert("data not edit")
-//   }
- 
-       
-//           // this.editUserInfo.patch(this.userForm.value)
-          
-//           // this.userForm.push(this.editUserInfo)
-//       console.log("res",this.editUserInfo)
-//     })
+  //reset value 
+  resetValue() {
+    this.userForm.reset();
   }
 
   //delete data
-  deleteUserData(id: number) {
-    if (confirm('Data deleted successfully')) {
-      this.items = this.items.filter((e: any) => e.id !== id)
-    }
-  }
-
+  // deleteUserData(id: number) {
+  //   if (confirm('Data deleted successfully')) {
+  //     this.items = this.items.filter((e: any) => e.id !== id)
+      
+  //   }
+  // }
+  //save data
   saveData() {
-    if (this.id && this.id != 0) {
-      this.updateUserData(this.id)
+    console.log("saveid", this.userData)
+    if (this.userData) {
+      this.updateUserData()
     }
     else {
       this.addUserData()
     }
   }
+  
+  deleteUserData(id: any) {
+    // this.position = position;
+
+    this.confirmationService.confirm({
+      message: 'Are you sure you want to delete?',
+        header: 'Confirm',
+        icon: 'pi pi-exclamation-triangle',
+        accept: () => {
+          this.http.delete(`${environment.apiEndPoint}/${id}`).subscribe((res:any)=>{
+            this.items = this.items.filter((e: any) => e.id !== id)
+            this.reference.detectChanges()
+          })
+        },
+        
+        key: "positionDialog"
+    });
+}
+// deleteUser(id: string) {
+//   console.log("delete")
+//   debugger
+//   this.confirmationService.confirm({
+//     message: 'Are you sure you want to delete?',
+//     header: 'Confirm',
+//     icon: 'pi pi-exclamation-triangle',
+//     accept: () => {
+//       this.gridservice.delete(id).subscribe(res => {
+//         this.userId = this.userId.filter((item: any) => item.id !== id);
+//         this.ref.detectChanges()
+//       })
+//     }
+//   })
+// }
 }
 
 

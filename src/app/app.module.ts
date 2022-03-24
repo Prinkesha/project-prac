@@ -18,6 +18,12 @@ import { DashboaerdComponent } from './components/dashboaerd/dashboaerd.componen
 import { LoginComponent } from './components/login/login.component';
 import { RegisrationComponent } from './components/regisration/regisration.component';
 import { ForgetPasswordComponent } from './components/forget-password/forget-password.component';
+import { ButtonModule } from 'primeng/button';
+import { MessagesModule } from 'primeng/messages';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+// import { CUSTOM_ELEMENTS_SCHEMA }      from '@angular/core';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {NgxPaginationModule} from 'ngx-pagination';
 
 @NgModule({
   declarations: [
@@ -39,16 +45,23 @@ import { ForgetPasswordComponent } from './components/forget-password/forget-pas
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     NgbModule,
     FormsModule,
     ReactiveFormsModule,
     NgbPaginationModule,
     NgbAlertModule,
+    ConfirmDialogModule,
+    ButtonModule,
+    MessagesModule,
+    NgxPaginationModule
     // HttpClientModule,
     // NgbActiveModal
   ],
+
   providers: [CustomService,NgbActiveModal],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  // schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
 })
 export class AppModule { }

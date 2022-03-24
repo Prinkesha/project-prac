@@ -11,8 +11,6 @@
   border-radius: 22px;
   width: 37vh;
   padding: 17px;
-  // margin-bottom: 2px;
-  // margin-right: 57px;
   background: linear-gradient(70deg, rgba(0, 0, 0, 0.1), rgba(255, 255, 255, 0.5), rgba(0, 0, 0, 0.1));
 }
 .change1{
@@ -22,8 +20,10 @@
   gap: 20px;
 
 }
+.bold{
+  font-weight: 600;
+}
 .bgc{
-  // background-color: #4b4b57;
   background-color: #32323f;
 
 }
@@ -31,14 +31,7 @@
     border: none !important;
 }
 .list_view{
-  //   width: 45%;
-  //   padding: 30px;
-  // width: 45%;
-  // background: linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(255, 255, 255, 0.1), rgba(0, 0, 0, 0.2));
   margin: 0 auto;
-
-  //   margin-left: 300px;
-  // margin: 0 auto;
 }
 .tr_border{
     border-bottom: 2px solid black;

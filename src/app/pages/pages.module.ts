@@ -12,7 +12,13 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CardItemDirective } from './card-item.directive';
 import { ListItemDirective } from './list-item.directive';
-import { HttpClientModule } from '@angular/common/http'
+import { HttpClientModule } from '@angular/common/http';
+import { ButtonModule } from 'primeng/button';
+import { MessagesModule } from 'primeng/messages';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {NgxPaginationModule} from 'ngx-pagination';
+
 
 
 @NgModule({
@@ -29,10 +35,15 @@ import { HttpClientModule } from '@angular/common/http'
   imports: [
     CommonModule,
     PagesRoutingModule,
+    // BrowserAnimationsModule,
     FormsModule,
     NgbModule,
     HttpClientModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    ConfirmDialogModule,
+    ButtonModule,
+    MessagesModule,
+ 
   ]
 })
 export class PagesModule { }
