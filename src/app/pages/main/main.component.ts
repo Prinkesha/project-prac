@@ -6,16 +6,25 @@ import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CustomService } from 'src/app/services/custom.service';
 import { environment } from 'src/environments/environment';
 import { IUser } from './data.modal';
-import {ConfirmationService} from 'primeng/api';
-import {Message} from 'primeng/api';
+import { ConfirmationService } from 'primeng/api';
+import { Message } from 'primeng/api';
 import { PrimeNGConfig } from 'primeng/api';
+import { ThisReceiver } from '@angular/compiler';
+interface Country {
+  id?: number;
+  name: string;
+  flag: string;
+  area: number;
+  population: number;
+}
 
+const COUNTRIES: Country[] = []
 
 @Component({
   selector: 'app-main',
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.scss'],
-  providers: [CustomService,ConfirmationService ]
+  providers: [CustomService, ConfirmationService]
 })
 export class MainComponent implements OnInit {
   closeResult = '';
@@ -28,9 +37,14 @@ export class MainComponent implements OnInit {
   edata: any
   userData: any = null
   msgs: Message[] = [];
-
-    position: string ='';
-  constructor(public modalService: NgbModal, private confirmationService: ConfirmationService, private primengConfig: PrimeNGConfig,private router: Router,private userService: CustomService, private http: HttpClient, private fb: FormBuilder, private reference: ChangeDetectorRef) {
+  page = 1;
+  pageSize = 4;
+  collectionSize = 0;
+  countries: any[] = [];
+  position: string = '';
+  user: any = []
+  showPagin: boolean = false
+  constructor(public modalService: NgbModal, private confirmationService: ConfirmationService, private primengConfig: PrimeNGConfig, private router: Router, private userService: CustomService, private http: HttpClient, private fb: FormBuilder, private reference: ChangeDetectorRef) {
     this.userForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       username: ['', [Validators.required]],
@@ -52,8 +66,13 @@ export class MainComponent implements OnInit {
       }),
       phone: ['', [Validators.required]]
     })
+    this.refreshCountries();
   }
-
+  refreshCountries() {
+    this.items = this.user
+      .map((country: any, i: number) => ({ id: i + 1, ...country }))
+      .slice((this.page - 1) * this.pageSize, (this.page - 1) * this.pageSize + this.pageSize);
+  }
   ngOnInit(): void {
     this.primengConfig.ripple = true;
     this.getUserData()
@@ -69,13 +88,22 @@ export class MainComponent implements OnInit {
     this.reference.detectChanges()
   }
 
+  // getUserData() {
+  //   this.http.get(`${environment.apiEndPoint}`).subscribe((res: any) => {
+  //     this.items = res
+  //     console.log(this.items[0])
+  //   })
+  // }
   getUserData() {
     this.http.get(`${environment.apiEndPoint}`).subscribe((res: any) => {
-      this.items = res
-      console.log(this.items[0])
+      this.user = res
+      this.collectionSize = this.user.length
+      this.collectionSize = this.userData.length
+      this.refreshCountries()
+      this.collectionSize = COUNTRIES.length
     })
+    this.showPagin = true
   }
-
   //add user data
   addUserData() {
     const Data: IUser = {
@@ -205,11 +233,12 @@ export class MainComponent implements OnInit {
   // deleteUserData(id: number) {
   //   if (confirm('Data deleted successfully')) {
   //     this.items = this.items.filter((e: any) => e.id !== id)
-      
+
   //   }
   // }
   //save data
   saveData() {
+    debugger
     console.log("saveid", this.userData)
     if (this.userData) {
       this.updateUserData()
@@ -218,39 +247,26 @@ export class MainComponent implements OnInit {
       this.addUserData()
     }
   }
-  
+
   deleteUserData(id: any) {
-    // this.position = position;
+    // this.position = id;
 
     this.confirmationService.confirm({
       message: 'Are you sure you want to delete?',
-        header: 'Confirm',
-        icon: 'pi pi-exclamation-triangle',
-        accept: () => {
-          this.http.delete(`${environment.apiEndPoint}/${id}`).subscribe((res:any)=>{
-            this.items = this.items.filter((e: any) => e.id !== id)
-            this.reference.detectChanges()
-          })
-        },
-        
-        key: "positionDialog"
+      header: 'Confirm',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.http.delete(`${environment.apiEndPoint}/${id}`).subscribe((res: any) => {
+          this.items = this.items.filter((e: any) => e.id !== id)
+          this.reference.detectChanges()
+        })
+      },
+
+      key: "positionDialog"
     });
-}
-// deleteUser(id: string) {
-//   console.log("delete")
-//   debugger
-//   this.confirmationService.confirm({
-//     message: 'Are you sure you want to delete?',
-//     header: 'Confirm',
-//     icon: 'pi pi-exclamation-triangle',
-//     accept: () => {
-//       this.gridservice.delete(id).subscribe(res => {
-//         this.userId = this.userId.filter((item: any) => item.id !== id);
-//         this.ref.detectChanges()
-//       })
-//     }
-//   })
-// }
+  }
+
+
 }
 
 

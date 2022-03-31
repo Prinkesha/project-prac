@@ -13,12 +13,17 @@
   padding: 17px;
   background: linear-gradient(70deg, rgba(0, 0, 0, 0.1), rgba(255, 255, 255, 0.5), rgba(0, 0, 0, 0.1));
 }
+
 .change1{
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   gap: 20px;
 
+}
+.pagina{
+  display: flex;
+  justify-content: space-around;
 }
 .bold{
   font-weight: 600;
